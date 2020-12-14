@@ -5,15 +5,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 
 public class multiplayerGameHooksClient extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	
+	private Socket socket;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		connectSocket();
 	}
 
 	@Override
@@ -23,6 +26,15 @@ public class multiplayerGameHooksClient extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();
+	}
+
+	public void connectSocket() {
+		try{
+			socket = IO.socket("http://localhost:8080");
+			socket.connect();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 	
 	@Override

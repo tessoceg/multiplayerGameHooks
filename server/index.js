@@ -1,14 +1,14 @@
-let app = require('express')();
-let server = require('http').Server(app);
-let io = require('socket.io')(server);
+const httpServer = require('http').createServer();
 
-server.listen(8080, function () {
-    console.log('Server is now running on port 8080')
+const io = require('socket.io')(httpServer);
+
+io.on('connection', socket => {
+  console.log('Player is connected!');
+  socket.on('disconnect', () => {
+  console.log('Player disconnected!')
+  })
 });
 
-io.on('connection', function(socket) {
-    console.log('Player Connected!');
-    socket.on('disconnect', function() {
-        console.log('Player Disconnected')
-    });
-});
+httpServer.listen(8080, () => {
+  console.log('mf thang is running on port 8080');
+})
